@@ -5,6 +5,7 @@ import './App.css';
 import logo from './logo.svg';
 import Databases from "./components/Databases";
 import Main from "./components/Main";
+import Database from "./components/Database";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Router history={browserHistory}>
           <Route path="/" component={Main} />
           <Route path="/databases" component={Databases} />
+          <Route path="/databases/:id" component={Database} />
 
         </Router>
       </div>

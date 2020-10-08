@@ -9,28 +9,29 @@ import '../App.css';
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 
-export default class Databases extends Component {
+export default class Database extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            databases: [],
+            id: this.props.params.id,
+            database: {},
             isLoading: false,
         };
     }
 
     componentDidMount() {
-        this.getDatabases();
+        this.getDatabase();
     }
 
-    getDatabases() {
-        axios.get("http://localhost:8080/api/databases", {
+    getDatabase() {
+        axios.get("http://localhost:8080/api/databases/" + this.state.id, {
             headers: {
                 'Content-Type': 'application/json'
             }
         })
             .then((response) => {
                 console.log(response.data);
-                this.setState({databases: response.data});
+                this.setState({database: response.data});
             })
             .catch((error) => {
                 console.log('Error *** : ' + error);
@@ -41,14 +42,14 @@ export default class Databases extends Component {
         browserHistory.push(path);
     };
 
-    deleteDatabase(id) {
-        axios.delete("http://localhost:8080/api/databases/" + id, {
+    deleteTable(id) {
+        axios.delete("http://localhost:8080/api/table?tableId=" + id, {
             headers: {
                 'Content-Type': 'application/json'
             }
         })
             .then((response) => {
-                this.getDatabases();
+                this.getDatabase();
             })
             .catch((error) => {
                 console.log('Error *** : ' + error);
@@ -57,18 +58,11 @@ export default class Databases extends Component {
 
     render() {
         let _this = this;
-
+        let tables = this.state.database.tables ? this.state.database.tables : [];
+        console.log(tables);
         return (
             <div className="Users">
-                <h2 className="text-center">Manage Databases</h2>
-                <div className={"header-preview"}>
-                    Manage your databases, tables, data<br/>
-                    <Button className={"invite-agent"} onClick={function () {
-                        _this.redirect(`/database`)
-                    }}>
-                        Add Database
-                    </Button>
-                </div>
+                <h2 className="text-center">Manage Tables in Database "{this.state.database.name}"</h2>
                 <br/>
                 <Row className={"data-table"}>
                     <Col sm={{span: 11}} className={"user-table"}>
@@ -76,14 +70,14 @@ export default class Databases extends Component {
                             :
                             <div>
                                 <Row className="user-preview-header">
-                                    <Col sm={{span: 2}}><b>Database name</b></Col>
-                                    <Col sm={{span: 7}}><b>Tables</b></Col>
+                                    <Col sm={{span: 2}}><b>Table name</b></Col>
+                                    <Col sm={{span: 7}}><b>Attributes</b></Col>
                                 </Row>
-                                {this.state.databases.map((db) => {
+                                {tables.map((table) => {
                                     return (
-                                        <Row className="user-preview" key={db.id}>
-                                            <Col sm={{span: 2}}>{db.name}</Col>
-                                            <Col sm={{span: 7}}>{db.tables.map(t => t.name + " ")}</Col>
+                                        <Row className="user-preview" key={table.id}>
+                                            <Col sm={{span: 2}}>{table.name}</Col>
+                                            <Col sm={{span: 7}}>{table.header.attributes.map(t => t.name + "(" + t.type + ", max=" + t.maxLength + ")" + " ")}</Col>
                                             {/*<Col sm={{span: 3}}>{agent.email}</Col>*/}
                                             {/*<Col sm={{span: 1}}>{agent.status === "REGISTERED" ? "Yes" : "No"}</Col>*/}
                                             <Col sm={{span: 3}}>
@@ -94,14 +88,14 @@ export default class Databases extends Component {
 
                                                     <DropdownMenu>
                                                         <Dropdown.Item onClick={function () {
-                                                            _this.redirect("/databases/" + db.id);
+                                                            _this.redirect("/databases/" + _this.state.id + "/tables/" + table.id);
                                                         }}>
-                                                            View/Edit tables
+                                                            View/Edit data
                                                         </Dropdown.Item>
                                                         <Dropdown.Item onClick={function () {
-                                                            _this.deleteDatabase(db.id);
+                                                            _this.deleteTable(table.id);
                                                         }}>
-                                                            Delete database
+                                                            Delete table
                                                         </Dropdown.Item>
                                                     </DropdownMenu>
                                                 </Dropdown>
