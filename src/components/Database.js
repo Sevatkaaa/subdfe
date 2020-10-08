@@ -24,6 +24,7 @@ export default class Database extends Component {
     }
 
     getDatabase() {
+        this.setState({isLoading: true});
         axios.get("http://localhost:8080/api/databases/" + this.state.id, {
             headers: {
                 'Content-Type': 'application/json'
@@ -31,7 +32,7 @@ export default class Database extends Component {
         })
             .then((response) => {
                 console.log(response.data);
-                this.setState({database: response.data});
+                this.setState({database: response.data, isLoading: false});
             })
             .catch((error) => {
                 console.log('Error *** : ' + error);
@@ -62,7 +63,20 @@ export default class Database extends Component {
         console.log(tables);
         return (
             <div className="Users">
+                {this.state.isLoading ? <div className="application-loading"/> : null}
                 <h2 className="text-center">Manage Tables in Database "{this.state.database.name}"</h2>
+                <div className={"header-preview"}>
+                    <Button className={"invite-agent"} onClick={function () {
+                        _this.redirect(`/databases`)
+                    }}>
+                        Go to databases
+                    </Button>
+                    <Button className={"invite-agent ml-40"} onClick={function () {
+                        _this.redirect(`/databases/${_this.state.id}/table`)
+                    }}>
+                        Add Table
+                    </Button>
+                </div>
                 <br/>
                 <Row className={"data-table"}>
                     <Col sm={{span: 11}} className={"user-table"}>
@@ -71,15 +85,22 @@ export default class Database extends Component {
                             <div>
                                 <Row className="user-preview-header">
                                     <Col sm={{span: 2}}><b>Table name</b></Col>
-                                    <Col sm={{span: 7}}><b>Attributes</b></Col>
+                                    <Col sm={{span: 4}}><b>Attributes</b></Col>
+                                    <Col sm={{span: 3}}><b>Lines</b></Col>
                                 </Row>
                                 {tables.map((table) => {
                                     return (
                                         <Row className="user-preview" key={table.id}>
                                             <Col sm={{span: 2}}>{table.name}</Col>
-                                            <Col sm={{span: 7}}>{table.header.attributes.map(t => t.name + "(" + t.type + ", max=" + t.maxLength + ")" + " ")}</Col>
+                                            <Col sm={{span: 4}}>{table.header.attributes.map(t => {
+                                                return (
+                                                    <div>
+                                                        {t.name + "(" + t.type + ", max=" + t.maxLength + ")" + " "}
+                                                    </div>
+                                                )
+                                            })}</Col>
                                             {/*<Col sm={{span: 3}}>{agent.email}</Col>*/}
-                                            {/*<Col sm={{span: 1}}>{agent.status === "REGISTERED" ? "Yes" : "No"}</Col>*/}
+                                            <Col sm={{span: 3}}>{table.lines.length}</Col>
                                             <Col sm={{span: 3}}>
                                                 <Dropdown className={"user-actions"}>
                                                     <DropdownToggle className={"user-actions-dropdown"} variant="outline-primary" id="dropdown-basic">

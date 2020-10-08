@@ -60,6 +60,7 @@ export default class Databases extends Component {
 
         return (
             <div className="Users">
+                {this.state.isLoading ? <div className="application-loading"/> : null}
                 <h2 className="text-center">Manage Databases</h2>
                 <div className={"header-preview"}>
                     Manage your databases, tables, data<br/>
@@ -83,7 +84,7 @@ export default class Databases extends Component {
                                     return (
                                         <Row className="user-preview" key={db.id}>
                                             <Col sm={{span: 2}}>{db.name}</Col>
-                                            <Col sm={{span: 7}}>{db.tables.map(t => t.name + " ")}</Col>
+                                            <Col sm={{span: 7}}>{db.tables.map(t => t.name).join(", ")}</Col>
                                             {/*<Col sm={{span: 3}}>{agent.email}</Col>*/}
                                             {/*<Col sm={{span: 1}}>{agent.status === "REGISTERED" ? "Yes" : "No"}</Col>*/}
                                             <Col sm={{span: 3}}>
