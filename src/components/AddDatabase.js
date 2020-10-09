@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import {Button, Col, Form, FormControl, FormGroup, Row} from "react-bootstrap";
 import {browserHistory} from "react-router";
 import axios from "axios";
+import {NotificationContainer, NotificationManager} from "react-notifications";
+import 'react-notifications/lib/notifications.css';
 
 export default class AddDatabase extends Component {
 
@@ -50,6 +52,7 @@ export default class AddDatabase extends Component {
             .then((response) => {
                 console.log(response);
                 _this.redirect(`/databases/${response.data.id}`);
+                NotificationManager.success("Database created", "Success");
             })
             .catch(error => {
                 console.log("Error *** : " + error);
@@ -85,6 +88,7 @@ export default class AddDatabase extends Component {
                         </Row>
                     </Form>
                 </Col>
+                <NotificationContainer/>
             </div>
         );
     }

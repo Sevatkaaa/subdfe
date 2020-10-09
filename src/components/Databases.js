@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, {Component} from "react";
 import {browserHistory} from "react-router";
 import {Col, Row, Button, Dropdown,} from "react-bootstrap";
-import NotificationContainer from "react-notifications";
-
+import {NotificationContainer, NotificationManager} from "react-notifications";
+import 'react-notifications/lib/notifications.css';
 import '../App.css';
 
 import DropdownToggle from "react-bootstrap/DropdownToggle";
@@ -49,6 +49,7 @@ export default class Databases extends Component {
         })
             .then((response) => {
                 this.getDatabases();
+                NotificationManager.success("Database deleted", "Success");
             })
             .catch((error) => {
                 console.log('Error *** : ' + error);

@@ -3,6 +3,7 @@ import {Col, Row, Button, Container} from "react-bootstrap";
 import {browserHistory} from "react-router";
 
 import '../App.css';
+import {NotificationContainer, NotificationManager} from "react-notifications";
 
 export default class Main extends Component {
     constructor(props) {
@@ -54,6 +55,7 @@ export default class Main extends Component {
                         </Row>
                     </Container>
                 </div>
+                <NotificationContainer/>
             </div>
         );
     }

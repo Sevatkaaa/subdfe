@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, {Component} from "react";
 import {browserHistory} from "react-router";
 import {Col, Row, Button, Dropdown,} from "react-bootstrap";
-import NotificationContainer from "react-notifications";
-
+import {NotificationContainer, NotificationManager} from "react-notifications";
+import 'react-notifications/lib/notifications.css';
 import '../App.css';
 
 import DropdownToggle from "react-bootstrap/DropdownToggle";
@@ -51,6 +51,7 @@ export default class Database extends Component {
         })
             .then((response) => {
                 this.getDatabase();
+                NotificationManager.success("Table deleted", "Success");
             })
             .catch((error) => {
                 console.log('Error *** : ' + error);
@@ -90,11 +91,11 @@ export default class Database extends Component {
                                 </Row>
                                 {tables.map((table) => {
                                     return (
-                                        <Row className="user-preview" key={table.id}>
+                                        <Row className="user-preview" key={"table" + table.id}>
                                             <Col sm={{span: 2}}>{table.name}</Col>
                                             <Col sm={{span: 4}}>{table.header.attributes.map(t => {
                                                 return (
-                                                    <div>
+                                                    <div key={"headerAttibute" + t.id}>
                                                         {t.name + "(" + t.type + ", max=" + t.maxLength + ")" + " "}
                                                     </div>
                                                 )

@@ -10,6 +10,7 @@ import Table from "./components/Table";
 import AddDatabase from "./components/AddDatabase";
 import AddTable from "./components/AddTable";
 import AddAttribute from "./components/AddAttribute";
+import AddLine from "./components/AddLine";
 
 function App() {
   return (
@@ -18,9 +19,11 @@ function App() {
           <Route path="/" component={Main} />
             <Route path="/database" component={AddDatabase} />
             <Route path="/databases" component={Databases} />
-          <Route path="/databases/:id" component={Database} />
+            <Route path="/databases/:id" component={Database} />
             <Route path="/databases/:id/table" component={AddTable} />
             <Route path="/databases/:id/tables/:tableId" component={Table} />
+            <Route path="/databases/:id/tables/:tableId/line" component={AddLine} />
+            <Route path="/databases/:id/tables/:tableId/line:lineId" component={AddLine} />
             <Route path="/databases/:id/tables/:tableId/attribute" component={AddAttribute} />
 
         </Router>

@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, {Component} from "react";
 import {browserHistory} from "react-router";
 import {Col, Row, Button, Dropdown,} from "react-bootstrap";
-import NotificationContainer from "react-notifications";
-
+import {NotificationContainer, NotificationManager} from "react-notifications";
+import 'react-notifications/lib/notifications.css';
 import '../App.css';
 
 import DropdownToggle from "react-bootstrap/DropdownToggle";
@@ -51,6 +51,7 @@ export default class Table extends Component {
         })
             .then((response) => {
                 this.redirect(`/databases/${this.state.databaseId}`);
+                NotificationManager.success("Table deleted", "Success");
             })
             .catch((error) => {
                 console.log('Error *** : ' + error);
@@ -65,6 +66,7 @@ export default class Table extends Component {
         })
             .then((response) => {
                 this.getTable();
+                NotificationManager.success("Line deleted", "Success");
             })
             .catch((error) => {
                 console.log('Error *** : ' + error);
@@ -120,7 +122,7 @@ export default class Table extends Component {
                                                 {line.lineObjects.map(line => {
                                                     let at = this.state.table.header.attributes.find(t => t.name === line.name);
                                                     return (
-                                                        <div>
+                                                        <div key={"line" + line.id}>
                                                             {at.name + "(" + at.type + ", max=" + at.maxLength + ")" + " "} <br/>
                                                         </div>
                                                     );}
@@ -129,7 +131,7 @@ export default class Table extends Component {
                                             <Col sm={{span: 3}}>
                                                 {line.lineObjects.map(at => {
                                                     return (
-                                                        <div>
+                                                        <div key={"lineObj" + at.id}>
                                                             {at.value} <br/>
                                                         </div>
                                                     );}

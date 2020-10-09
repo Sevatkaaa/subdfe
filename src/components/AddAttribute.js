@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import {Button, Col, Form, FormControl, FormGroup, Row} from "react-bootstrap";
 import {browserHistory} from "react-router";
 import axios from "axios";
+import {NotificationContainer, NotificationManager} from "react-notifications";
+import 'react-notifications/lib/notifications.css';
 
 export default class AddTable extends Component {
 
@@ -86,6 +88,7 @@ export default class AddTable extends Component {
             .then((response) => {
                 console.log(response);
                 _this.redirect(`/databases/${_this.state.databaseId}/tables/${_this.state.tableId}`);
+                NotificationManager.success("Attribute added", "Success");
             })
             .catch(error => {
                 console.log("Error *** : " + error);
@@ -141,6 +144,7 @@ export default class AddTable extends Component {
                         </Row>
                     </Form>
                 </Col>
+                <NotificationContainer/>
             </div>
         );
     }
