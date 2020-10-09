@@ -11,23 +11,27 @@ export default class AddLine extends Component {
         super(props);
         this.user = {};
         this.state = {
+            id: props.params.lineId,
             table: {},
+            line: {},
             tableId: props.params.tableId,
             databaseId: props.params.id,
-            id: null,
             errors: {}
         }
     }
 
     getTable() {
+        this.setState({isLoading: true});
         axios.get("http://localhost:8080/api/tables/" + this.state.tableId, {
             headers: {
                 'Content-Type': 'application/json'
             }
         })
             .then((response) => {
+                console.log(this.state.id);
                 console.log(response.data);
-                this.setState({table: response.data});
+                console.log(response.data.lines.find(l => l.id == this.state.id));
+                this.setState({table: response.data, isLoading: false, line: response.data.lines.find(l => l.id == this.state.id)});
             })
             .catch((error) => {
                 console.log('Error *** : ' + error);
@@ -113,10 +117,12 @@ export default class AddLine extends Component {
         let _this = this;
         let body = [];
         this.state.table.header.attributes.forEach(at => {
+            let id = this.state.line.lineObjects.find(lo => lo.name === at.name && lo.type === at.type).id;
             let name = at.name;
             let type = at.type;
             let value = values[at.id].value;
             body.push({
+                id: id,
                 name: name,
                 type: type,
                 value: value
@@ -124,7 +130,7 @@ export default class AddLine extends Component {
         });
         console.log(body);
         this.setState({isLoading: true});
-        axios.post(`http://localhost:8080/api/line?tableId=${_this.state.table.id}`, body, {
+        axios.put(`http://localhost:8080/api/line?tableId=${_this.state.table.id}&lineId=${_this.state.line.id}`, body, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -132,7 +138,7 @@ export default class AddLine extends Component {
             .then((response) => {
                 console.log(response);
                 _this.redirect(`/databases/${_this.state.databaseId}/tables/${_this.state.tableId}`);
-                NotificationManager.success("Line added", "Success");
+                NotificationManager.success("Line edited", "Success");
             })
             .catch(error => {
                 console.log("Error *** : " + error);
@@ -142,11 +148,12 @@ export default class AddLine extends Component {
     render() {
         let _this = this;
         let attributes = this.state.table.header ? this.state.table.header.attributes : [];
+        console.log(attributes);
         return (
             <div className="AddUser">
                 {this.state.isLoading ? <div className="application-loading"/> : null}
                 <Col sm={{span: 8, offset: 2}} className="page-header">
-                    <h2>Add Line</h2>
+                    <h2>Edit Line</h2>
                 </Col>
                 <Col sm={{span: 8, offset: 2}} className={"page"}>
                     <Form>
@@ -175,7 +182,7 @@ export default class AddLine extends Component {
                                 <Col sm={{span: 3}}>
                                     <FormGroup controlId={"formGroupValue" + at.id}>
                                         Value
-                                        <FormControl ref={ref => {
+                                        <FormControl defaultValue={this.state.line.lineObjects == null ? null : this.state.line.lineObjects.find(lo => lo.name === at.name).value} ref={ref => {
                                             this.user[at.id] = ref
                                         }} type="text"/>
                                         <span id={"value-error-" + at.id}
@@ -191,7 +198,7 @@ export default class AddLine extends Component {
                                 <Button className="btn-secondary cancel" onClick={function() {_this.redirect(`/databases/${_this.state.databaseId}/tables/${_this.state.tableId}`)}}>Cancel</Button>
                             </Col>
                             <Col sm={{span: 4}}>
-                                <Button className="save" size="large" onClick={function() {_this.createUser()}}>Add Line</Button>
+                                <Button className="save" size="large" onClick={function() {_this.createUser()}}>Edit Line</Button>
                             </Col>
                         </Row>
                     </Form>

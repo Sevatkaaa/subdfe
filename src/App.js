@@ -2,7 +2,6 @@ import React from 'react';
 import {Router, Route, browserHistory} from 'react-router';
 
 import './App.css';
-import logo from './logo.svg';
 import Databases from "./components/Databases";
 import Main from "./components/Main";
 import Database from "./components/Database";
@@ -11,6 +10,7 @@ import AddDatabase from "./components/AddDatabase";
 import AddTable from "./components/AddTable";
 import AddAttribute from "./components/AddAttribute";
 import AddLine from "./components/AddLine";
+import Line from "./components/Line";
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
             <Route path="/databases/:id/table" component={AddTable} />
             <Route path="/databases/:id/tables/:tableId" component={Table} />
             <Route path="/databases/:id/tables/:tableId/line" component={AddLine} />
-            <Route path="/databases/:id/tables/:tableId/line:lineId" component={AddLine} />
+            <Route path="/databases/:id/tables/:tableId/lines/:lineId" component={Line} />
             <Route path="/databases/:id/tables/:tableId/attribute" component={AddAttribute} />
 
         </Router>
