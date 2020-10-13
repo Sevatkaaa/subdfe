@@ -81,23 +81,10 @@ export default class AddLine extends Component {
                 if (isNaN(number)) {
                     errors[at.id] = "Insert real number";
                 }
-            } else if (at.type === "COMPLEX_REAL") {
-                let nums = value.split(" ");
-                if (nums.length !== 2) {
-                    errors[at.id] = "Insert 2 real numbers"
-                } else {
-                    if (isNaN(nums[0]) || isNaN(nums[1])) {
-                        errors[at.id] = "Insert 2 real numbers";
-                    }
-                }
-            } else if (at.type === "COMPLEX_INTEGER") {
-                let nums = value.split(" ");
-                if (nums.length !== 2) {
-                    errors[at.id] = "Insert 2 integer numbers"
-                } else {
-                    if (isNaN(nums[0]) || nums[0] != parseInt(nums[0] + "") || isNaN(nums[1]) || nums[1] != parseInt(nums[1] + "")) {
-                        errors[at.id] = "Insert 2 integer numbers";
-                    }
+            } else if (at.type === "DOLLAR") {
+                let nums = value.split("$");
+                if (nums.length !== 2 && nums[0] !== "" || isNaN(Number(nums[1]))) {
+                    errors[at.id] = "Insert dollar value"
                 }
             }
             if (!value) {

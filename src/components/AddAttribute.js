@@ -121,8 +121,7 @@ export default class AddTable extends Component {
                                         <option>REAL</option>
                                         <option>STRING</option>
                                         <option>CHAR</option>
-                                        <option>COMPLEX_INTEGER</option>
-                                        <option>COMPLEX_REAL</option>
+                                        <option>DOLLAR</option>
                                     </FormControl>
                                 </FormGroup>
                             </Col>
