@@ -433,3 +433,8 @@ body {
   margin-top: 12px;
   cursor: pointer;
 }
+
+.header-row-value {
+  margin-left: 0px;
+  margin-top: 40px;
+}

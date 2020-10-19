@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, {Component} from "react";
 import {browserHistory} from "react-router";
-import {Col, Row, Button, Dropdown,} from "react-bootstrap";
+import {Col, Row, Button, Dropdown, FormControl, FormGroup,} from "react-bootstrap";
 import {NotificationContainer, NotificationManager} from "react-notifications";
 import 'react-notifications/lib/notifications.css';
 import '../App.css';
@@ -17,7 +17,10 @@ export default class Table extends Component {
             id: this.props.params.tableId,
             table: {},
             isLoading: false,
-        };
+            lineObjValue: {},
+            errors: {},
+            filterLines: []
+        }
     }
 
     componentDidMount() {
@@ -58,6 +61,26 @@ export default class Table extends Component {
             });
     }
 
+    findByValue() {
+        axios.get("http://localhost:8080/api/linesByLineObjValue?tableId=" + this.state.id + "&lineObjValue=" + this.lineObjValue.value, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                let data = response.data;
+                this.setState({filterLines: data.map(l => l.id)});
+                NotificationManager.success("Lines filtered", "Success");
+            })
+            .catch((error) => {
+                console.log('Error *** : ' + error);
+            });
+    }
+
+    showAll() {
+        this.setState({filterLines: this.state.table.lines.map(l => l.id)});
+    }
+
     deleteLine(id) {
         axios.delete("http://localhost:8080/api/line?lineId=" + id, {
             headers: {
@@ -76,6 +99,9 @@ export default class Table extends Component {
     render() {
         let _this = this;
         let lines = this.state.table.lines ? this.state.table.lines : [];
+        if (this.state.filterLines.length !== 0) {
+            lines = lines.filter(l => this.state.filterLines.includes(l.id))
+        }
         console.log(lines);
         return (
             <div className="Users">
@@ -102,6 +128,30 @@ export default class Table extends Component {
                     }}>
                         Delete table
                     </Button>
+                    <Row key={"header-row-value"} className={"header-row-value"}>
+                        <Col sm={{span: 3, offset: 2}}>
+
+                        <Button onClick={function () {
+                        _this.findByValue();
+                    }}>
+                        Filter by value
+                    </Button>
+                        </Col>
+                        <Col sm={{span: 4}}>
+                        <FormGroup controlId="formGroupFirstName">
+                        <FormControl ref={ref => {this.lineObjValue = ref}} type="text"/>
+                        <span id="firstName-error" style={{color: "red"}}>{this.state.errors["firstName"]}</span>
+                    </FormGroup>
+                        </Col>
+                        <Col sm={{span: 3}}>
+
+                            <Button onClick={function () {
+                                _this.showAll();
+                            }}>
+                                Show all
+                            </Button>
+                        </Col>
+                    </Row>
                 </div>
                 <br/>
                 <Row className={"data-table"}>
