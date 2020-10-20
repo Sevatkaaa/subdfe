@@ -58,6 +58,21 @@ export default class Table extends Component {
             });
     }
 
+    deleteTableDuplicates(id) {
+        axios.delete("http://localhost:8080/api/table/duplicates?tableId=" + id, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                this.getTable();
+                NotificationManager.success("Duplicates deleted", "Success");
+            })
+            .catch((error) => {
+                console.log('Error *** : ' + error);
+            });
+    }
+
     deleteLine(id) {
         axios.delete("http://localhost:8080/api/line?lineId=" + id, {
             headers: {
@@ -101,6 +116,11 @@ export default class Table extends Component {
                         _this.deleteTable(_this.state.id);
                     }}>
                         Delete table
+                    </Button>
+                    <Button className={"invite-agent ml-40"} onClick={function () {
+                        _this.deleteTableDuplicates(_this.state.id);
+                    }}>
+                        Delete duplicates
                     </Button>
                 </div>
                 <br/>
