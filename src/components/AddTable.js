@@ -46,7 +46,7 @@ export default class AddTable extends Component {
     createUserRequest(firstName) {
         let _this = this;
         this.setState({isLoading: true});
-        axios.post("http://localhost:8080/api/table?name=" + firstName + "&dbId=" + this.state.databaseId, {
+        axios.post("http://db-management-system.herokuapp.com/api/table?name=" + firstName + "&dbId=" + this.state.databaseId, {
             headers: {
                 'Content-Type': 'application/json'
             }

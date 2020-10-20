@@ -28,7 +28,7 @@ export default class Table extends Component {
     }
 
     getTable() {
-        axios.get("http://localhost:8080/api/tables/" + this.state.id, {
+        axios.get("http://db-management-system.herokuapp.com/api/tables/" + this.state.id, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -47,7 +47,7 @@ export default class Table extends Component {
     };
 
     deleteTable(id) {
-        axios.delete("http://localhost:8080/api/table?tableId=" + id, {
+        axios.delete("http://db-management-system.herokuapp.com/api/table?tableId=" + id, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -62,7 +62,7 @@ export default class Table extends Component {
     }
 
     findByValue() {
-        axios.get("http://localhost:8080/api/linesByLineObjValue?tableId=" + this.state.id + "&lineObjValue=" + this.lineObjValue.value, {
+        axios.get("http://db-management-system.herokuapp.com/api/linesByLineObjValue?tableId=" + this.state.id + "&lineObjValue=" + this.lineObjValue.value, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -82,7 +82,7 @@ export default class Table extends Component {
     }
 
     deleteLine(id) {
-        axios.delete("http://localhost:8080/api/line?lineId=" + id, {
+        axios.delete("http://db-management-system.herokuapp.com/api/line?lineId=" + id, {
             headers: {
                 'Content-Type': 'application/json'
             }
