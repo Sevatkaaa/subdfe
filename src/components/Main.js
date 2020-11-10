@@ -18,10 +18,10 @@ export default class Main extends Component {
         let _this = this;
         return (
             <div className="text-center">
-                <h2 className="mt-20">Manage Databases</h2>
+                <h2 className="mt-20">Manage your Databases</h2>
                 <div className="text-secondary pb-100">
                     Welcome to Database Management Console<br/>
-                    You can manage databases, table,<br/>
+                    You can manage your databases, table,<br/>
                     add new tables, edit previous data
                 </div>
                 <div className="main">

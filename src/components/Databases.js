@@ -62,7 +62,7 @@ export default class Databases extends Component {
         return (
             <div className="Users">
                 {this.state.isLoading ? <div className="application-loading"/> : null}
-                <h2 className="text-center">Manage Databases</h2>
+                <h2 className="text-center">Manage your Databases</h2>
                 <div className={"header-preview"}>
                     Manage your databases, tables, data<br/>
                     <Button className={"invite-agent"} onClick={function () {
@@ -90,12 +90,12 @@ export default class Databases extends Component {
                                             {/*<Col sm={{span: 1}}>{agent.status === "REGISTERED" ? "Yes" : "No"}</Col>*/}
                                             <Col sm={{span: 3}}>
                                                 <Dropdown className={"user-actions"}>
-                                                    <DropdownToggle className={"user-actions-dropdown"} variant="outline-primary" id="dropdown-basic">
+                                                    <DropdownToggle id={"drop-" + db.id} className={"user-actions-dropdown"} variant="outline-primary">
                                                         Actions
                                                     </DropdownToggle>
 
                                                     <DropdownMenu>
-                                                        <Dropdown.Item onClick={function () {
+                                                        <Dropdown.Item id={"edit-" + db.id} onClick={function () {
                                                             _this.redirect("/databases/" + db.id);
                                                         }}>
                                                             View/Edit tables

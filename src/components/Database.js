@@ -104,12 +104,12 @@ export default class Database extends Component {
                                             <Col sm={{span: 3}}>{table.lines.length}</Col>
                                             <Col sm={{span: 3}}>
                                                 <Dropdown className={"user-actions"}>
-                                                    <DropdownToggle className={"user-actions-dropdown"} variant="outline-primary" id="dropdown-basic">
+                                                    <DropdownToggle id={"drop-" + table.id} className={"user-actions-dropdown"} variant="outline-primary">
                                                         Actions
                                                     </DropdownToggle>
 
                                                     <DropdownMenu>
-                                                        <Dropdown.Item onClick={function () {
+                                                        <Dropdown.Item id={"editTable-" + table.id} onClick={function () {
                                                             _this.redirect("/databases/" + _this.state.id + "/tables/" + table.id);
                                                         }}>
                                                             View/Edit data
